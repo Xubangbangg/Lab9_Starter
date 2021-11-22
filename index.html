@@ -87,21 +87,148 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+      <script>
+        window.TrackJS && TrackJS.install({ 
+          token: "bd069165f80d4351a95b05137a0064f1"
+          // for more configuration options, see https://docs.trackjs.com
+        });
+  </script>
+                        
   <script>
+    class typeError extends Error {
+      constructor(message) {
+        super(message); // (1)
+        this.name = "typeError"; // (2)
+      }
+    }
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
       let output = document.querySelector('output');
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        console.log(firstNum)
+        if(firstNum === "" || secondNum === ''){
+          let err = new Error("empty input");
+          throw err;
+        }
+        if(!(typeof(firstNum) === "number")){
+          let err = new typeError("this is a type error");
+          throw err;
+        }
+        let operator = document.querySelector('#operator').value;
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } 
+      catch (err) {
+        if(err instanceof typeError) {
+          alert(err.message);
+        }
+        else{
+          alert(err.message)
+        }
+
+      }
+      finally{
+        alert("finish calculation")
+      }
+
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+
+    errorBtns[0].addEventListener('click', () => {
+      console.log("this is the text")
+    });
+
+    errorBtns[1].addEventListener('click', () => {
+      console.error("this is the error")
+    });
+
+    errorBtns[2].addEventListener('click', () => {
+      console.count("count")
+    });
+
+    errorBtns[3].addEventListener('click', () => {
+      console.warn("this is c Warn")
+    });
+
+    errorBtns[4].addEventListener('click', () => {
+      const errorMsg = 'the # is not odd';
+      var numb = 6;
+      // console.assert(numb % 2 === 0, "numb is odd");
+      console.assert(numb % 2 === 1, {numb, errorMsg});
+      // console.assert(numb % 2 === 1, {numb: numb, errorMsg: errorMsg});
+    });
+
+    errorBtns[5].addEventListener('click', () => {
+      console.clear("this is c clear")
+    });
+
+    errorBtns[6].addEventListener('click', () => {
+      console.dir(errorBtns[7])
+    });
+
+    errorBtns[7].addEventListener('click', () => {
+      console.dirxml(errorBtns[7])
+    });
+
+    errorBtns[8].addEventListener('click', () => {
+      console.group("Console.group")
+    });
+
+    errorBtns[9].addEventListener('click', () => {
+      console.groupEnd("Console.group")
+    });
+
+    errorBtns[10].addEventListener('click', () => {
+      function classes(name, num) {
+        this.name = name;
+        this.num = num;
+      }
+
+      var class1 = new classes("data structure", 100);
+      var class2 = new classes("database", 132);
+      var class3 = new classes("recommender system", 158);
+
+      console.table([class1, class2, class3]);
+    });
+
+    errorBtns[11].addEventListener('click', () => {
+      console.time()
+    });
+
+    errorBtns[12].addEventListener('click', () => {
+      console.timeEnd()
+    });
+
+    errorBtns[13].addEventListener('click', () => {
+      function f1() {
+      function f2() {
+        console.trace();
+      }
+        f2();
+      }
+      f1();
+    });
+
+    errorBtns[14].addEventListener('click', () => {
+      let error = new error("global error");
+      throw error;
+    });
+
+    window.onerror = function(message, source, lineno, colno, error){
+      console.log("This is a global error")
+      TrackJS.track('Testing TrackJS!');
+    }
+
+
   </script>
 </body>
 
